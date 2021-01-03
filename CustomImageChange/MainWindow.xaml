@@ -1,0 +1,120 @@
+﻿<Window x:Class="CustomImageChange.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:CustomImageChange"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CropUpCommand}" Key="Up"/>
+        <KeyBinding Command="{Binding CropDownCommand}" Key="Down"/>
+        <KeyBinding Command="{Binding CropLeftCommand}" Key="Left"/>
+        <KeyBinding Command="{Binding CropRightCommand}" Key="Right"/>
+        <KeyBinding Command="{Binding ExpandUpCommand}" Key="Up" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding ExpandDownCommand}" Key="Down" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding ExpandLeftCommand}" Key="Left" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding ExpandRightCommand}" Key="Right" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding CropAllImageCommand}" Key="A" Modifiers="Ctrl"/>       
+        <KeyBinding Command="{Binding SuccessCommand}" Key="S" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding ApplyCropImageCommand}" Key="D" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding RestoreTransCommand}" Key="F" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding PassCommand}" Key="W"/>
+        <KeyBinding Command="{Binding TargetPreviousCommand}" Key="Q"/>
+        <KeyBinding Command="{Binding NextImageCommand}" Key="S"/>
+        <KeyBinding Command="{Binding PreviousImageCommand}" Key="A"/>
+
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>     
+       
+        <Canvas Height="Auto"    
+               Width="Auto"                          
+               Grid.Column="0"
+               Grid.Row="0">
+            
+            <Image Height="Auto"    
+               Width="Auto"                    
+               Stretch="None"
+                Name="TargetImagePanel"
+               Source="{Binding TargetImage}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding MouseDownCommand}" CommandParameter="{Binding ElementName=TargetImagePanel}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding MouseUpCommand}" CommandParameter="{Binding ElementName=TargetImagePanel}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" CommandParameter="{Binding ElementName=TargetImagePanel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Image>
+
+            <Image Canvas.Top="{Binding SourceTop}"
+                   Canvas.Left="{Binding SourceLeft}"
+                   Stretch="None"
+                   Name="SourceImagePanel"
+                   Source="{Binding SourceImage}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding MouseDownCommand}" CommandParameter="{Binding ElementName=SourceImagePanel}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding MouseUpCommand}" CommandParameter="{Binding ElementName=SourceImagePanel}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" CommandParameter="{Binding ElementName=SourceImagePanel}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+
+            <Image Canvas.Top="{Binding CropImageTop}"
+                   Canvas.Left="{Binding CropImageLeft}"
+                   Stretch="None"
+                   Source="{Binding CropImage}">
+                
+            </Image>
+        </Canvas>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="{Binding TargetStatus}" />
+            <Label Grid.Column="1" Content="{Binding SourceStatus}" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Content="◀" Command="{Binding PreviousImageCommand}"/>
+            <Button Grid.Column="0" Content="▶" Command="{Binding NextImageCommand}"/>
+            <Button Grid.Column="2" Content="Pass" Command="{Binding PassCommand}"/>
+            <Button Grid.Column="3" Content="Previous" Command="{Binding TargetPreviousCommand}"/>
+            <Button Grid.Column="4" Content="All Crop" Command="{Binding CropAllImageCommand}"/>
+            <Button Grid.Column="5" Content="Restore Trans" Command="{Binding RestoreTransCommand}"/>
+            <Button Grid.Column="6" Content="Apply Crop" Command="{Binding ApplyCropImageCommand}"/>
+            <Button Grid.Column="7" Content="Save FIle" Command="{Binding SuccessCommand}"/>
+            <Button Grid.Column="8" Content="Target Folder" Command="{Binding SelectTargetFolderCommand}"/>
+            <Button Grid.Column="9" Content="Source Folder" Command="{Binding SelectSourceFolderCommand}"/>
+        </Grid>
+    </Grid>
+</Window>
